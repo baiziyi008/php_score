@@ -1,0 +1,16 @@
+<html>
+
+<form action="http://localhost/pro1/process.php?format=json" method="post">
+app_id: &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<input type="text" value="" name="app_id"/><br/><br/>
+设备号： &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<input type="text" value="" name="did"/><br/><br/>
+encrypt_did： <input type="text" value="" name="encrypt_did" /><br/><br/>
+操作类型：<select name="action">
+  <option name="add" value ="add" selected="selected">增加积分</option>
+  <option name="use" value ="use">消耗积分</option>
+</select>
+<br/><br/>
+积分数量：<input type="text" name="score" value=""/><br/><br/>
+<input type="submit" value="提交"/>
+</form>
+
+</html>
