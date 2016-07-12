@@ -1,15 +1,16 @@
 <?php
-
+error_reporting(0);
 require_once './common.php';
 class Init extends Common{
     public function index() {
         $this->check();
-        $app = $this->getApp($this->param['app_id']);
+        $newID = $this->param['app_id'];
+        $app = $this->getApp($newID);
         if (!$app) {
-            $this->setApp($this->param['did']);
-            $this->initScore($this->param['app_id']);
+            $newID = $this->setApp($this->param['did']);
+            $this->initScore($newID);
         }
-        $score = $this->getScore($this->param['app_id']);
+        $score = $this->getScore($newID);
         Response::show(200, "获取数据成功", $score);
     }
 }

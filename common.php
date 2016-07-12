@@ -5,12 +5,22 @@ class Common{
     public $param;
     public $app;
     public function check() {
-        $this->param['app_id'] = $app_id = isset($_POST['app_id']) ? $_POST['app_id'] : '';
-        $this->param['did'] = $did= isset($_POST['did']) ? $_POST['did'] : '';
-        $this->param['encrypt_did'] = $encrypt_did= isset($_POST['encrypt_did']) ? $_POST['encrypt_did'] : '';
+        $data = file_get_contents('php://input');
+
+        if ($data == '') {
+            return Response::show(402, '数据格式不合法');
+        }
+        $jsonStr = json_decode($data, true);
+        if (!is_array($jsonStr)) {
+            return Response::show(403, '数据格式不合法');
+        }
+
+        $this->param['app_id'] = $app_id = isset($jsonStr['app_id']) ? $jsonStr['app_id'] : '';
+        $this->param['did'] = $did= isset($jsonStr['did']) ? $jsonStr['did'] : '';
+        $this->param['encrypt_did'] = $encrypt_did= isset($jsonStr['encrypt_did']) ? $jsonStr['encrypt_did'] : '';
         
-        $this->param['action'] = $action = isset($_POST['action']) ? $_POST['action'] : '';
-        $this->param['score'] = $score = isset($_POST['score']) ? $_POST['score'] : '';
+        $this->param['action'] = $action = isset($jsonStr['action']) ? $jsonStr['action'] : '';
+        $this->param['score'] = $score = isset($jsonStr['score']) ? $jsonStr['score'] : '';
         if (!is_numeric($app_id)) {
             return Response::show(401, '数据不合法');
         }
@@ -33,7 +43,7 @@ class Common{
         $conn = Db::getInstance()->connect();
         
         $result = mysql_query($sql, $conn);
-        return (mysql_fetch_assoc($result));
+        return (mysql_insert_id($conn));
         exit;
     }
     
@@ -46,7 +56,7 @@ class Common{
         exit;
     }
     public function getScore($id) {
-        $sql = "select score from score where app_id=".$id;
+        $sql = "select app_id,score from score where app_id=".$id;
         $conn = Db::getInstance()->connect();
         
         $result = mysql_query($sql, $conn);

@@ -1,4 +1,5 @@
 <?php
+error_reporting(0);
 require_once './common.php';
 
 class Process extends Common
@@ -13,8 +14,8 @@ class Process extends Common
         
         $scoreArray = $this->getScore($appid);
         $score = $scoreArray['score'];
-        echo "appid=".$appid."  score=".$score."\n";
-        
+        //echo "appid=".$appid."  score=".$score."\n";
+
         if (!is_numeric($requestScore)){
             Response::show(405, "增加积分参数错误");
             exit;
@@ -28,7 +29,11 @@ class Process extends Common
             }
                 
             $this->useScore($appid, $requestScore);
+        }elseif ($action == 'get'){
+            Response::show(200, "成功获取积分信息", $scoreArray);
+            exit;
         }else {
+            
         }
         
         Response::show(200, "操作积分成功", $this->getScore($appid));
